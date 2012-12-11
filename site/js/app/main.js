@@ -1,0 +1,1 @@
+Jaspberry.initialize(Jaspberry.router);
