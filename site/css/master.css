@@ -9,44 +9,31 @@ body {
     width: 770px;
 }
 
-.chapterHeadline {
-    text-align: right;
-    color: #c10003;
-    font-size: 2em;
-    line-height: 1em;
-    margin-bottom: 7em;
+#gpioArea {
+    width: 350px;
 }
 
-.chapterHeadline h1 {
-    text-align: right;
-    color: #c10003;
-    font-size: 4em;
-    line-height: 1em;
+.greenBackground {
+    background: #d4ffd3;
 }
 
-.chapterSection {
-
+.redBackground {
+    background: #f9cfc8;
 }
 
-.chapterSection h1 {
-    margin-top: 1em;
-    color: #c10003;
+.pointer {
+    cursor: pointer;
 }
 
-.leftMargin {
-    position: relative;
-    left: -100px;
-    top: 20px;
+a {
+    color: #5286ff;
+    text-decoration: underline;
 }
 
-.rightMargin {
-    position: relative;
-    right: -100px;
-    left: 770px;
-    top: 20px;
+.mediumRightPadding {
+    padding-right: 2em;
 }
 
-.paragraphTextArea {
-    width: 700px;
-    height: 200px;
+.thinborder {
+    border: 1px solid #3b3b3b;
 }

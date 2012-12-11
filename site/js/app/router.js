@@ -11,8 +11,15 @@ Jaspberry.router = Ember.Router.create({
         index: Ember.Route.extend({
             route: '/',
 
+            togglePin: function(router, event) {
+                console.log('togglePin');
+                console.log(event.context);
+                event.context.set('state', !event.context.get('state'));
+                Jaspberry.store.commit();
+            },
+
             connectOutlets: function(router) {
-                router.get('applicationController').connectOutlet('gpio', Jaspberry.PinStatus.find());
+                router.get('applicationController').connectOutlet('gpio', Jaspberry.Pinstate.find("gpio"));
             }
         })
     })

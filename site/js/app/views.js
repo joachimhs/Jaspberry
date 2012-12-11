@@ -5,5 +5,12 @@ Jaspberry.ApplicationView = Ember.View.extend({
 
 Jaspberry.GpioView = Ember.View.extend({
     elementId: 'gpioArea',
-    templateName: 'gpio-template'
+    templateName: 'gpio-template',
+    classNames: 'thinborder'
+});
+
+Jaspberry.OnOffView = Ember.View.extend({
+    templateName: 'on-off-template',
+    tagName: 'span',
+    allowToggle: false
 });

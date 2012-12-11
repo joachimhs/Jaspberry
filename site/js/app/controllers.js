@@ -4,6 +4,6 @@ Jaspberry.ApplicationController = Ember.Controller.extend({
     }
 });
 
-Jaspberry.GpioController = Ember.ArrayController.extend({
+Jaspberry.GpioController = Ember.ObjectController.extend({
     content: []
 });

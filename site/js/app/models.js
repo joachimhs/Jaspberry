@@ -1,32 +1,43 @@
-Jaspberry.PinStatus = DS.Model.extend({
-    vdcOne: DS.attr('boolean'),
-    vdcTwo: DS.attr('boolean'),
-    sda0: DS.attr('boolean'),
-    dnc0: DS.attr('boolean'),
-    scl0: DS.attr('boolean'),
-    gnd: DS.attr('boolean'),
-    gpio7: DS.attr('boolean'),
-    txd: DS.attr('boolean'),
-    dnc1: DS.attr('boolean'),
-    rxd: DS.attr('boolean'),
-    gpio0: DS.attr('boolean'),
-    gpio1: DS.attr('boolean'),
-    gpio2: DS.attr('boolean'),
-    dnc2: DS.attr('boolean'),
-    gpio3: DS.attr('boolean'),
-    gpio4: DS.attr('boolean'),
-    dnc3: DS.attr('boolean'),
-    gpio5: DS.attr('boolean'),
-    mosi: DS.attr('boolean'),
-    dnc4: DS.attr('boolean'),
-    miso: DS.attr('boolean'),
-    gpio6: DS.attr('boolean'),
-    sclk: DS.attr('boolean'),
-    ce0: DS.attr('boolean'),
-    dnc5: DS.attr('boolean'),
-    ce1: DS.attr('boolean')
+Jaspberry.Pinstate = DS.Model.extend({
+    vdcOne: DS.belongsTo('Jaspberry.Pin'),
+    vdcTwo: DS.belongsTo('Jaspberry.Pin'),
+    sda0: DS.belongsTo('Jaspberry.Pin'),
+    dnc0: DS.belongsTo('Jaspberry.Pin'),
+    scl0: DS.belongsTo('Jaspberry.Pin'),
+    gnd: DS.belongsTo('Jaspberry.Pin'),
+    gpio7: DS.belongsTo('Jaspberry.Pin'),
+    txd: DS.belongsTo('Jaspberry.Pin'),
+    dnc1: DS.belongsTo('Jaspberry.Pin'),
+    rxd: DS.belongsTo('Jaspberry.Pin'),
+    gpio0: DS.belongsTo('Jaspberry.Pin'),
+    gpio1: DS.belongsTo('Jaspberry.Pin'),
+    gpio2: DS.belongsTo('Jaspberry.Pin'),
+    dnc2: DS.belongsTo('Jaspberry.Pin'),
+    gpio3: DS.belongsTo('Jaspberry.Pin'),
+    gpio4: DS.belongsTo('Jaspberry.Pin'),
+    dnc3: DS.belongsTo('Jaspberry.Pin'),
+    gpio5: DS.belongsTo('Jaspberry.Pin'),
+    mosi: DS.belongsTo('Jaspberry.Pin'),
+    dnc4: DS.belongsTo('Jaspberry.Pin'),
+    miso: DS.belongsTo('Jaspberry.Pin'),
+    gpio6: DS.belongsTo('Jaspberry.Pin'),
+    sclk: DS.belongsTo('Jaspberry.Pin'),
+    ce0: DS.belongsTo('Jaspberry.Pin'),
+    dnc5: DS.belongsTo('Jaspberry.Pin'),
+    ce1: DS.belongsTo('Jaspberry.Pin')
 });
 
-Jaspberry.PinStatus.reopenClass({
-    url: "gpio.json"
+Jaspberry.Pin = DS.Model.extend({
+    state: DS.attr('boolean'),
+    isBusy: function() {
+        return !this.get('isLoaded') || this.get('isSaving');
+    }.property('isLoaded', 'isSaving')
 });
+
+Jaspberry.Pinstate.reopenClass({
+    url: "pinStatus"
+});
+
+Jaspberry.Pin.reopenClass({
+    url: 'triggerPin'
+})

@@ -7,7 +7,7 @@ var Jaspberry = Ember.Application.create({
 });
 
 //Removing the Camelcase-to-dash convention from Ember Data
-DS.Model.reopen({
+/*DS.Model.reopen({
     namingConvention: {
         keyToJSONKey: function(key) {
             return key;
@@ -28,7 +28,7 @@ DS.Model.reopen({
             adapter.find(store, this.constructor, this.get('id'));
         }
     }
-});
+});*/
 
 Jaspberry.Serializer = DS.JSONSerializer.extend({
     addBelongsTo: function(hash, record, key, relationship) {
@@ -49,7 +49,7 @@ Jaspberry.Adapter = DS.Adapter.create({
         Jaspberry.log('finding all: type: ' + type + ' url: ' + url);
         $.ajax({
             type: 'GET',
-            url: url + 's',
+            url: url,
             contentType: 'application/json',
             success: function(data) {
                 Jaspberry.log(type);
@@ -74,9 +74,17 @@ Jaspberry.Adapter = DS.Adapter.create({
         $.ajax({
       	  type: 'GET',
       	  url: url,
-      	  data: JSON.stringify(requestStringJson, null, '\t').replace(/\%/g,'%25'),
+      	  //data: JSON.stringify(requestStringJson, null, '\t').replace(/\%/g,'%25'),
       	  contentType: 'application/json',
       	  success: function(data) {
+                console.log(type);
+                console.log(data);
+                if (type === Jaspberry.Pinstate) {
+                    console.log(data.gpiostates);
+                    console.log(data.gpios);
+                    if (data.gpiostates) store.loadMany(Jaspberry.Pinstate, data.gpiostates);
+                    if (data.gpios) store.loadMany(Jaspberry.Pin, data.gpios);
+                }
                 Jaspberry.store.load(type, data);
             }
       	});
@@ -164,15 +172,15 @@ Jaspberry.ajaxSuccess = function(data) {
 
 
 Jaspberry.store = DS.Store.create({
-    //adapter: Jaspberry.Adapter,
-    adapter:  DS.RESTAdapter.create({
+    adapter: Jaspberry.Adapter,
+    /*adapter:  DS.RESTAdapter.create({
         bulkCommit: false,
         plurals: {
-            pinstatus: 'pinstatuses'
+            pinstate: 'pinstates'
         },
         mappings: {
-            pinstatuses: Jaspberry.PinStatus
+            pinstates: Jaspberry.Pinstate
         }
-    }),
+    }),*/
     revision: 10
 });
