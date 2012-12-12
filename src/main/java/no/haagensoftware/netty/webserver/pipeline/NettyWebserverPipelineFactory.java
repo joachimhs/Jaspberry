@@ -5,6 +5,9 @@ import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 
+import com.pi4j.io.gpio.*;
+import com.pi4j.io.gpio.event.GpioPinDigitalStateChangeEvent;
+import com.pi4j.io.gpio.event.GpioPinListenerDigital;
 import no.haagensoftware.netty.webserver.data.GpioState;
 import no.haagensoftware.netty.webserver.handler.*;
 
@@ -30,33 +33,51 @@ public class NettyWebserverPipelineFactory implements ChannelPipelineFactory {
 	public NettyWebserverPipelineFactory(String webappPath) {
         this.webappPath = webappPath;
         gpioStateList = new ArrayList<GpioState>();
+        gpioStateList.add(new GpioState("gpio0", false));
+        gpioStateList.add(new GpioState("gpio1", false));
+        gpioStateList.add(new GpioState("gpio2", false));
+        gpioStateList.add(new GpioState("gpio3", false));
+        gpioStateList.add(new GpioState("gpio4", false));
+        gpioStateList.add(new GpioState("gpio5", false));
+        gpioStateList.add(new GpioState("gpio6", false));
+        gpioStateList.add(new GpioState("gpio7", false));
         gpioStateList.add(new GpioState("vdcOne", false));
         gpioStateList.add(new GpioState("vdcTwo", false));
         gpioStateList.add(new GpioState("sda0", false));
         gpioStateList.add(new GpioState("dnc0", false));
         gpioStateList.add(new GpioState("scl0", false));
         gpioStateList.add(new GpioState("gnd", false));
-        gpioStateList.add(new GpioState("gpio7", false));
         gpioStateList.add(new GpioState("txd", false));
         gpioStateList.add(new GpioState("dnc1", false));
         gpioStateList.add(new GpioState("rxd", false));
-        gpioStateList.add(new GpioState("gpio0", false));
-        gpioStateList.add(new GpioState("gpio1", false));
-        gpioStateList.add(new GpioState("gpio2", false));
         gpioStateList.add(new GpioState("dnc2", false));
-        gpioStateList.add(new GpioState("gpio3", false));
-        gpioStateList.add(new GpioState("gpio4", false));
         gpioStateList.add(new GpioState("dnc3", false));
-        gpioStateList.add(new GpioState("gpio5", false));
         gpioStateList.add(new GpioState("mosi", false));
         gpioStateList.add(new GpioState("dnc4", false));
         gpioStateList.add(new GpioState("miso", false));
-        gpioStateList.add(new GpioState("gpio6", false));
         gpioStateList.add(new GpioState("sclk", false));
         gpioStateList.add(new GpioState("ce0", false));
         gpioStateList.add(new GpioState("dnc5", false));
         gpioStateList.add(new GpioState("ce1", false));
-	}
+
+        GpioController gpioController = GpioFactory.getInstance();
+        gpioStateList.get(0).setGpioPinDigitalOutput(gpioController.provisionDigitalOutputPin(RaspiPin.GPIO_00, "gpio0", PinState.LOW));
+        gpioStateList.get(1).setGpioPinDigitalOutput(gpioController.provisionDigitalOutputPin(RaspiPin.GPIO_01, "gpio1", PinState.LOW));
+        gpioStateList.get(2).setGpioPinDigitalOutput(gpioController.provisionDigitalOutputPin(RaspiPin.GPIO_02, "gpio2", PinState.LOW));
+        gpioStateList.get(3).setGpioPinDigitalOutput(gpioController.provisionDigitalOutputPin(RaspiPin.GPIO_03, "gpio3", PinState.LOW));
+        gpioStateList.get(4).setGpioPinDigitalOutput(gpioController.provisionDigitalOutputPin(RaspiPin.GPIO_04, "gpio4", PinState.LOW));
+        gpioStateList.get(5).setGpioPinDigitalOutput(gpioController.provisionDigitalOutputPin(RaspiPin.GPIO_05, "gpio5", PinState.LOW));
+        gpioStateList.get(6).setGpioPinDigitalOutput(gpioController.provisionDigitalOutputPin(RaspiPin.GPIO_06, "gpio6", PinState.LOW));
+        //gpioStateList.get(7).setGpioPinDigitalOutput(gpioController.provisionDigitalOutputPin(RaspiPin.GPIO_07, "gpio7", PinState.LOW));
+
+        GpioPinDigitalInput input = gpioController.provisionDigitalInputPin(RaspiPin.GPIO_07, "gpio7", PinPullResistance.PULL_DOWN);
+        input.addListener(new GpioPinListenerDigital() {
+            @Override
+            public void handleGpioPinDigitalStateChangeEvent(GpioPinDigitalStateChangeEvent gpioPinDigitalStateChangeEvent) {
+                logger.info("PIN Changed to: " + gpioPinDigitalStateChangeEvent.getState());
+            }
+        });
+    }
 
 	@Override
 	public ChannelPipeline getPipeline() throws Exception {

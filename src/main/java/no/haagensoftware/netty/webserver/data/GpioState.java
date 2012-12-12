@@ -1,6 +1,10 @@
 package no.haagensoftware.netty.webserver.data;
 
 import com.google.gson.JsonObject;
+import com.pi4j.io.gpio.GpioPinDigitalInput;
+import com.pi4j.io.gpio.GpioPinDigitalOutput;
+import com.pi4j.io.gpio.PinState;
+import org.apache.log4j.Logger;
 
 /**
  * Created with IntelliJ IDEA.
@@ -12,6 +16,9 @@ import com.google.gson.JsonObject;
 public class GpioState {
     private String gpioId;
     private Boolean gpioState;
+    private GpioPinDigitalOutput gpioPinDigitalOutput;
+    private Long pinStateChangeTime;
+    private Logger logger = Logger.getLogger(GpioState.class.getName());
 
     public GpioState() {
         gpioState = new Boolean(false);
@@ -34,8 +41,33 @@ public class GpioState {
         return gpioState;
     }
 
+    public Long getPinStateChangeTime() {
+        return pinStateChangeTime;
+    }
+
     public void setGpioState(Boolean gpioState) {
+        if (gpioPinDigitalOutput != null) {
+            int counter = 0;
+            if (gpioState) {
+                gpioPinDigitalOutput.setState(PinState.HIGH);
+                while (!gpioPinDigitalOutput.isHigh()) {
+                    counter++;
+                }
+            } else {
+                gpioPinDigitalOutput.setState(PinState.LOW);
+                while (!gpioPinDigitalOutput.isLow()) {
+                    counter++;
+                }
+            }
+            pinStateChangeTime = (long)counter;
+            logger.info("Pin changed to " + gpioPinDigitalOutput.getState() + " in " + pinStateChangeTime + " ms.");
+        }
+
         this.gpioState = gpioState;
+    }
+
+    public void setGpioPinDigitalOutput(GpioPinDigitalOutput gpioPinDigitalOutput) {
+        this.gpioPinDigitalOutput = gpioPinDigitalOutput;
     }
 
     public String toJSON() {
