@@ -57,7 +57,8 @@ Ember.TEMPLATES['gpio-template'] = Ember.Handlebars.compile('' +
         '<td>25: DNC</td><td class="mediumRightPadding"> {{view Jaspberry.OnOffView itemBinding="dnc5"}}</td>' +
         '<td>26: CE1</td><td> {{view Jaspberry.OnOffView itemBinding="ce1"}}</td>' +
     '</tr>' +
-    '</table>'
+    '</table>' +
+    '<button {{action navigateToPinbat}}>Play Pinbat!</button>'
 );
 
 Ember.TEMPLATES['on-off-template'] = Ember.Handlebars.compile(
@@ -102,7 +103,10 @@ Ember.TEMPLATES['memory-template'] = Ember.Handlebars.compile(
             'Congratulations! You made it to Round {{numLeds}}!<br />' +
             '<button {{action finishGame target="controller"}}>Finish Game</button>' +
         '{{else}}' +
-            '<button {{action startGame target="controller"}}>Start Game</button>' +
+            '<div><h1>Setup</h1>Connect 5 LED and resistor pairs in parallel using GPIO Pins 0 through 4. Verify that you are able to turn each LED bulb on and off by setting the state of each of the GPIO pins to HIGH and then LOW. Once the setup is verified, you are ready to start the game. Good luck!</div>' +
+            '<div><img src="/img/pinbatsetup.png"></div>' +
+            '<button {{action startGame target="controller"}}>Start Game</button><br />' +
+            '<button {{action returnToJaspberry}}>Return to Jaspberry</button>' +
         '{{/if}}' +
     '{{/if}}'
 );

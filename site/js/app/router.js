@@ -11,6 +11,8 @@ Jaspberry.router = Ember.Router.create({
         index: Ember.Route.extend({
             route: '/',
 
+            navigateToPinbat: Ember.Route.transitionTo('pinbat'),
+
             togglePin: function(router, event) {
                 console.log('togglePin');
                 console.log(event.context);
@@ -23,8 +25,10 @@ Jaspberry.router = Ember.Router.create({
             }
         }),
 
-        memory: Ember.Route.extend({
-            route: '/memory',
+        pinbat: Ember.Route.extend({
+            route: '/pinbat',
+
+            returnToJaspberry:  Ember.Route.transitionTo('index'),
 
             connectOutlets: function(router) {
                 router.get('applicationController').connectOutlet('memory');
