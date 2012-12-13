@@ -68,15 +68,15 @@ public class NettyWebserverPipelineFactory implements ChannelPipelineFactory {
         gpioStateList.get(4).setGpioPinDigitalOutput(gpioController.provisionDigitalOutputPin(RaspiPin.GPIO_04, "gpio4", PinState.LOW));
         gpioStateList.get(5).setGpioPinDigitalOutput(gpioController.provisionDigitalOutputPin(RaspiPin.GPIO_05, "gpio5", PinState.LOW));
         gpioStateList.get(6).setGpioPinDigitalOutput(gpioController.provisionDigitalOutputPin(RaspiPin.GPIO_06, "gpio6", PinState.LOW));
-        //gpioStateList.get(7).setGpioPinDigitalOutput(gpioController.provisionDigitalOutputPin(RaspiPin.GPIO_07, "gpio7", PinState.LOW));
+        gpioStateList.get(7).setGpioPinDigitalOutput(gpioController.provisionDigitalOutputPin(RaspiPin.GPIO_07, "gpio7", PinState.LOW));
 
-        GpioPinDigitalInput input = gpioController.provisionDigitalInputPin(RaspiPin.GPIO_07, "gpio7", PinPullResistance.PULL_DOWN);
+        /*GpioPinDigitalInput input = gpioController.provisionDigitalInputPin(RaspiPin.GPIO_07, "gpio7", PinPullResistance.PULL_DOWN);
         input.addListener(new GpioPinListenerDigital() {
             @Override
             public void handleGpioPinDigitalStateChangeEvent(GpioPinDigitalStateChangeEvent gpioPinDigitalStateChangeEvent) {
                 logger.info("PIN Changed to: " + gpioPinDigitalStateChangeEvent.getState());
             }
-        });
+        });*/
     }
 
 	@Override
@@ -93,11 +93,12 @@ public class NettyWebserverPipelineFactory implements ChannelPipelineFactory {
         pipeline.addLast("encoder", new HttpResponseEncoder());
         pipeline.addLast("gzip", new HttpContentCompressor(6));
         pipeline.addLast("chunkedWriter", new ChunkedWriteHandler());
-        
+
         if (routerhandler == null) {
             routes.put("equals:/pinStatus", new PinStatusHandler(webappPath, gpioStateList));
             routes.put("equals:/triggerPin", new TriggerPinHandler(webappPath, gpioStateList));
             routes.put("equals:/piStatus", new PiStatusHandler(webappPath));
+            routes.put("equals:/pinGameAction", new PinGameHandler(webappPath, gpioStateList));
             routerhandler = new RouterHandler(routes, false, new CacheableFileServerHandler(webappPath, 0));
         }
 

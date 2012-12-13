@@ -81,3 +81,28 @@ Ember.TEMPLATES['on-off-template'] = Ember.Handlebars.compile(
         '{{/with}}' +
     '{{/if}}'
 );
+
+Ember.TEMPLATES['memory-template'] = Ember.Handlebars.compile(
+    '{{#if gameStarted}}' +
+        '{{#if raspberryPisTurn}}' +
+            'Raspberry Pi is LED-ing the way....' +
+        '{{else}}' +
+            '<h1>Round  {{numLeds}}</h1>' +
+            'Select which LEDs lit up, in correct order<br />' +
+            'Completed LEDs: {{completedLeds}} of {{numLeds}}<br />' +
+        
+            '<button {{action selectLedOne target="controller"}}>LED One</button>' +
+            '<button {{action selectLedTwo target="controller"}}>LED Two</button>' +
+            '<button {{action selectLedThree target="controller"}}>LED Three</button>' +
+            '<button {{action selectLedFour target="controller"}}>LED Four</button>' +
+            '<button {{action selectLedFive target="controller"}}>LED Five</button>' +
+        '{{/if}}' +
+    '{{else}}' +
+        '{{#if gameEnded}}' +
+            'Congratulations! You made it to Round {{numLeds}}!<br />' +
+            '<button {{action finishGame target="controller"}}>Finish Game</button>' +
+        '{{else}}' +
+            '<button {{action startGame target="controller"}}>Start Game</button>' +
+        '{{/if}}' +
+    '{{/if}}'
+);

@@ -14,3 +14,8 @@ Jaspberry.OnOffView = Ember.View.extend({
     tagName: 'span',
     allowToggle: false
 });
+
+Jaspberry.MemoryView = Ember.View.extend({
+    elementId: 'memoryArea',
+    templateName: 'memory-template'
+});

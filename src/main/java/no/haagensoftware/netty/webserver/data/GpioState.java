@@ -60,7 +60,7 @@ public class GpioState {
                 }
             }
             pinStateChangeTime = (long)counter;
-            logger.info("Pin changed to " + gpioPinDigitalOutput.getState() + " in " + pinStateChangeTime + " ms.");
+            logger.info("Pin changed to " + gpioPinDigitalOutput.getState() + " in " + pinStateChangeTime + " clock cycles.");
         }
 
         this.gpioState = gpioState;

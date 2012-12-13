@@ -21,6 +21,14 @@ Jaspberry.router = Ember.Router.create({
             connectOutlets: function(router) {
                 router.get('applicationController').connectOutlet('gpio', Jaspberry.Pinstate.find("gpio"));
             }
+        }),
+
+        memory: Ember.Route.extend({
+            route: '/memory',
+
+            connectOutlets: function(router) {
+                router.get('applicationController').connectOutlet('memory');
+            }
         })
     })
 });
