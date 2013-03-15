@@ -6,6 +6,8 @@ import no.haagensoftware.netty.webserver.util.IntegerParser;
 import org.jboss.netty.bootstrap.ServerBootstrap;
 import org.jboss.netty.channel.socket.nio.NioServerSocketChannelFactory;
 
+import com.pi4j.io.gpio.GpioFactory;
+
 import java.io.File;
 import java.io.FileInputStream;
 import java.net.InetSocketAddress;
@@ -71,6 +73,7 @@ public class Main {
 	}
 	
 	public void run() throws Exception {
+		
 		String webappDir = System.getProperty("jaspberry.webappDirectory");
 		System.setProperty("basedir", webappDir);
 
